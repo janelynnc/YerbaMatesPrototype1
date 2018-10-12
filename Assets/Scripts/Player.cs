@@ -23,6 +23,7 @@ public class Player : MonoBehaviour {
         PlayerMovement();
     }
  
+    // Player movement function
     public void PlayerMovement()
     {
         // Lets player move
@@ -58,28 +59,24 @@ public class Player : MonoBehaviour {
         if ((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
         {
             MovementDirection += Vector2.up;
-
         }
 
         // Move left
         if ((Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)))
         {
             MovementDirection += Vector2.left;
-
         }
 
         // Move down
         if ((Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)))
         {
             MovementDirection += Vector2.down;
-
         }
 
         // Move right
         if ( (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
         {
             MovementDirection += Vector2.right;
-
         }
     }
 }
