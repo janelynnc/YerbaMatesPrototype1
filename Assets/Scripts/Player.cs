@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
     }
 
     // Walking animation for the player
-    // Conditons are assigned in the animator
+    // Conditons and values of x and y are assigned in the animator
     public void AnimatedMovement(Vector2 MovementDirection)
     {
         MovementState.SetFloat("x", MovementDirection.x);
