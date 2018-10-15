@@ -3,33 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-    private Vector2 MovementDirection;
     public float StartX;
     private Animator MovementState;
+
     [SerializeField]
     private float MovementSpeed;
-    [SerializeField]
-    private float MaxSteps;
 
+    public List<Transform> targets;
+    private int i = 0;
+    public float proximity;
     // Use this for initialization
     void Start () {
-        StartX = transform.position.x;
+        MovementState = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update () {
-        EnemyMovement();
+        //EnemyMovement();
+        if(Vector3.Distance(gameObject.transform.position,targets[i].position)>= proximity)
+        {
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targets[i].position, Time.deltaTime * MovementSpeed);
+            //Call EnemyMovement with targets[i].transform.rotation.z
+            EnemyMovement(targets[i].transform.eulerAngles.z);
+        }
+        else
+        {
+            //play idle animation here
+  
+            if (i == targets.Count - 1) //If we reached the last target
+            {
+                i = 0; //set our index to 0
+            }
+            else
+            {
+                i++; // move on to the next index
+            }
+        }
     }
 
-    public void EnemyMovement()
+    public void EnemyMovement(float angle)
     {
-        transform.Translate(MovementSpeed * Time.deltaTime, 0,0);
-        if(Mathf.Abs(StartX - transform.position.x) > MaxSteps)
-        {
-            MovementSpeed *= -1.0f;
-        }
-        
+     
+        print(angle);
+        MovementState.SetFloat("z", angle);
+        MovementState.SetLayerWeight(1, 1);
 
-        
     }
 }
