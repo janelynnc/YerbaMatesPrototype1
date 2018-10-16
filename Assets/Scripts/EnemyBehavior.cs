@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour {
     public Transform PlayerPos;
     public float MinDistance;
+    public Player PlayerHealth;
     
 	// Use this for initialization
 	void Start () {
@@ -19,8 +20,18 @@ public class EnemyBehavior : MonoBehaviour {
             //gameObject -> get the gameobject we're attached to
             //.GetComponent<>() -> get the script
             // enabled sets script on/off
-            gameObject.GetComponent<EnemyPatrol>().enabled = false; //stop patrolling
-            gameObject.GetComponent<Enemy>().enabled = true; //start following
+
+            
+            if (PlayerHealth.PlayerHealth == 0)
+            {
+                gameObject.GetComponent<EnemyPatrol>().enabled = true; //stop patrolling
+                gameObject.GetComponent<Enemy>().enabled = false;
+            }
+            else
+            {
+                gameObject.GetComponent<EnemyPatrol>().enabled = false; //stop patrolling
+                gameObject.GetComponent<Enemy>().enabled = true; //start following
+            }
         }
         
        
