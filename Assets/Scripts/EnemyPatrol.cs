@@ -6,7 +6,7 @@ public class EnemyPatrol : MonoBehaviour
 {
     private Animator MovementState;
     private Transform PlayerTarget;
-
+    private Vector2 MovementDirection;
 
     [SerializeField]
     private float MovementSpeed;
@@ -20,44 +20,63 @@ public class EnemyPatrol : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+       
+        //targets = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
         MovementState = GetComponent<Animator>();
         EnemyMovement(targets[i].transform.eulerAngles.z);
     }
     private void OnEnable()
     {
-
+   
     }
+
     // Update is called once per frame
     void Update()
     {
 
-
-     
-        if(Vector2.Distance(transform.position,targets[i].position)> proximity ) //if we havent reached our target
+        if (Vector2.Distance(transform.position,targets[i].position)> proximity ) //if we havent reached our target
         {
+            Vector3 direction = targets[i].position - transform.position;
            
-            
-            Vector2 direction = gameObject.transform.position - targets[i].position; //find which direction we're going
-            direction = direction.normalized;
+
+            // Vector2 direction = gameObject.transform.position - targets[i].position; //find which direction we're going
+            //direction = direction.normalized;
+
+            if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y) && Mathf.Abs(direction.x) > Mathf.Epsilon)
+            {
+                direction.y = 0f;
+            }
+            else if (Mathf.Abs(direction.y) > Mathf.Epsilon)
+            {
+                direction.x = 0f;
+            }
+
             
             if (direction.y > .75f) //up
             {
-                EnemyMovement(90);
+                EnemyMovement(270);
+               
             }
             else if (direction.y < -.75) //down
             {
-                EnemyMovement(270);
+                EnemyMovement(90);
+                
             }
             else if (direction.x > 0) //left
             {
-                EnemyMovement(0);
-            }
-            else //right
-            {
                 EnemyMovement(180);
+                
             }
-            gameObject.transform.position = Vector2.MoveTowards(transform.position, targets[i].position, MovementSpeed * Time.deltaTime);
-
+            else if (direction.x < 0)//right
+            {
+                EnemyMovement(0);
+                
+            }
+            
+            
+            //gameObject.transform.position = Vector2.MoveTowards(transform.position, targets[i].position, MovementSpeed * Time.deltaTime);
+            gameObject.transform.position = Vector2.MoveTowards(transform.position, transform.position+direction, MovementSpeed * Time.deltaTime);
 
             //Call EnemyMovement with targets[i].transform.rotation.z
 
@@ -72,11 +91,14 @@ public class EnemyPatrol : MonoBehaviour
             }
             else
             {
+               
+
                 i++; // move on to the next index
             }
             StartTime = Time.time;
             TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed; 
         }
+        
         
     }
 
@@ -85,6 +107,7 @@ public class EnemyPatrol : MonoBehaviour
 
         print(angle);
         MovementState.SetFloat("z", angle);
+       // MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 1);
 
     }
