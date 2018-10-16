@@ -3,49 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-    public float StartX;
     private Animator MovementState;
+    private Transform PlayerTarget;
+
+    [SerializeField]
+    private float StoppingDistance;
 
     [SerializeField]
     private float MovementSpeed;
-    private float StartTime;
-    private float TotalTime;
-    public List<Transform> targets;
-    private int i = 0;
-    public float proximity;
+
     // Use this for initialization
     void Start () {
+        PlayerTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         MovementState = GetComponent<Animator>();
-        StartTime = Time.time;
-        TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed;
     }
 
     // Update is called once per frame
     void Update () {
         //EnemyMovement();
-        if(Vector3.Distance(gameObject.transform.position,targets[i].position)> proximity)
+        EnemyFollow();
+        Vector3 direction = gameObject.transform.position - PlayerTarget.position;
+        direction = direction.normalized; // find the direction we're going
+        if (direction.y > .75f)//up
         {
-            float TimeTaken = Time.time - StartTime;
-            float Percent = TimeTaken / TotalTime;
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targets[i].position, Percent);
-            //Call EnemyMovement with targets[i].transform.rotation.z
-            EnemyMovement(targets[i].transform.eulerAngles.z);
+            EnemyMovement(90);
         }
-        else
+        else if(direction.y < -.75)//down
         {
-            //play idle animation here
-
-            if (i == targets.Count - 1) //If we reached the last target
-            {
-                i = 0; //set our index to 0
-            }
-            else
-            {
-                i++; // move on to the next index
-            }
-            StartTime = Time.time;
-            TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed; 
+            EnemyMovement(270);
+        }else if (direction.x > 0)//left
+        {
+            EnemyMovement(0);
         }
+        else //right
+        {
+            EnemyMovement(180);
+        }
+        
+       
     }
 
     public void EnemyMovement(float angle)
@@ -55,5 +50,14 @@ public class Enemy : MonoBehaviour {
         MovementState.SetFloat("z", angle);
         MovementState.SetLayerWeight(1, 1);
 
+    }
+    
+    public void EnemyFollow()
+    {
+        if (Vector2.Distance(transform.position, PlayerTarget.position) > StoppingDistance) //if we're further than stopping distance
+        {
+            gameObject.transform.position = Vector2.MoveTowards(transform.position, PlayerTarget.position, MovementSpeed * Time.deltaTime);
+            print(gameObject.transform.position);
+        }
     }
 }
