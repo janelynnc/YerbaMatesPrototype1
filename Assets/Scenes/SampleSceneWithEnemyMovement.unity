@@ -536,7 +536,7 @@ Prefab:
     - target: {fileID: 114310159115847996, guid: b3930585ae064e544b187935578bcfc5,
         type: 2}
       propertyPath: MovementSpeed
-      value: 0.5
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3930585ae064e544b187935578bcfc5, type: 2}
@@ -925,8 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc29702d1c8ccb447a933d4b10efca31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartX: 0
-  MovementSpeed: 0.5
+  MovementSpeed: 0.05
   targets:
   - {fileID: 528166609}
   - {fileID: 626817589}

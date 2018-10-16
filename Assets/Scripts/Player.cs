@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
     private Rigidbody2D RB;
     private Animator MovementState;
     private Vector2 MovementDirection;
-    
+    public float angle;
     [SerializeField]
     private float MovementSpeed; // set value in inspector
 
@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
     void Update () {
         GetKeyInput();
         PlayerMovement();
+        
     }
  
     // Player movement function
