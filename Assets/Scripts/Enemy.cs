@@ -58,6 +58,17 @@ public class Enemy : MonoBehaviour {
         {
             gameObject.transform.position = Vector2.MoveTowards(transform.position, PlayerTarget.position, MovementSpeed * Time.deltaTime);
             print(gameObject.transform.position);
+            MovementState.SetLayerWeight(0, 1);
+            MovementState.SetLayerWeight(1, 1);
+            MovementState.SetLayerWeight(2, 0);
+        }
+        else
+        {
+            // attack player
+            print("attacking");
+            MovementState.SetLayerWeight(0, 0);
+            MovementState.SetLayerWeight(1, 0);
+            MovementState.SetLayerWeight(2, 1);
         }
     }
 }
