@@ -5,7 +5,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
     private Animator MovementState;
     private Transform PlayerTarget;
-
     public bool AttackLocked;
    // private Vector3 direction;
    
@@ -46,19 +45,34 @@ public class Enemy : MonoBehaviour {
     
     public void EnemyFollow()
     {
-        //print(Vector2.Distance(transform.position, PlayerTarget.position));
         if (Vector2.Distance(transform.position, PlayerTarget.position) > StoppingDistance) //if we're further than stopping distance
         {
+
             MovementSpeed = MaxSpeed;
             Vector3 direction = PlayerTarget.position - transform.position;
 
-            if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y) && Mathf.Abs(direction.x) > Mathf.Epsilon)
+            /*if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y) && Mathf.Abs(direction.x) > Mathf.Epsilon)
             {
                 direction.y = 0f;
             }
             else if (Mathf.Abs(direction.y) > Mathf.Epsilon)
             {
                 direction.x = 0f;
+            }*/
+
+           
+
+            if (Mathf.Abs(direction.x) > .01f)
+            {
+
+                if (Mathf.Abs(direction.y) > .01f)
+                {
+                    direction.y = 0;
+                }
+                else
+                {
+                    direction.x = 0;
+                }
             }
 
             if (direction.y > .75f) //up
@@ -83,7 +97,7 @@ public class Enemy : MonoBehaviour {
             }
             //gameObject.transform.position = Vector2.MoveTowards(transform.position, PlayerTarget.position, MovementSpeed * Time.deltaTime);
             gameObject.transform.position = Vector2.MoveTowards(transform.position, transform.position + direction, MovementSpeed * Time.deltaTime);
-            print(gameObject.transform.position);
+            
             MovementState.SetLayerWeight(0, 1);
             MovementState.SetLayerWeight(1, 1);
             MovementState.SetLayerWeight(2, 0);
@@ -115,6 +129,7 @@ public class Enemy : MonoBehaviour {
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 1);
         yield return new WaitForSeconds(2f);
+        PlayerTarget.gameObject.SendMessage("takedamage");
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 0);

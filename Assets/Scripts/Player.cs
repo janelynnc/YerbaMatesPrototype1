@@ -35,8 +35,9 @@ public class Player : MonoBehaviour {
     public void PlayerMovement()
     {
         // Lets player move
+        //print(MovementDirection);
         transform.Translate(MovementDirection * MovementSpeed * Time.deltaTime);
-        
+        //RB.velocity = MovementDirection * MovementSpeed;
         // If the player is moving, play walking animation
         // Otherwise, play idle animation
         if(MovementDirection.x != 0 || MovementDirection.y != 0)
@@ -62,11 +63,12 @@ public class Player : MonoBehaviour {
     private void GetKeyInput()
     {
         MovementDirection = Vector2.zero;
-
+        //print(Input.anyKey);
         // Move up
         if ((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
         {
             MovementDirection += Vector2.up;
+            
         }
 
         // Move left
@@ -86,11 +88,13 @@ public class Player : MonoBehaviour {
         {
             MovementDirection += Vector2.right;
         }
+        //print(MovementDirection);
     }
 
     // Collision - checking
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
+
         print("collide");
         GameObject PlayerCollidesWith = collision.gameObject;
         if(PlayerCollidesWith.tag == "Water")
@@ -105,23 +109,28 @@ public class Player : MonoBehaviour {
         if(PlayerCollidesWith.tag == "Enemy")
         {
             
-            GameObject Enemy = PlayerCollidesWith.gameObject;
-            if (Enemy.GetComponent<Enemy>().AttackLocked)
-            {
+           // GameObject Enemy = PlayerCollidesWith.gameObject;
+            //if (Enemy.GetComponent<Enemy>().AttackLocked)
+          //  {
+                /*
                 
                 if (!HealthLocked)
                 {
                     print("lose");
-                    StartCoroutine(LoseHealth(Enemy));
+                    //StartCoroutine(LoseHealth(Enemy));
                     //StopCoroutine("LoseHealth");
                 }
-                /*if (PlayerHealth > 0)
+                */
+               if (PlayerHealth > 0)
                 {
-                    PlayerHealth--;
-                    GameObject.Destroy(PlayerHearts[PlayerHearts.Count - 1]);
-                    PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
-                }*/
-            }
+
+                //StartCoroutine("KnockBack");
+                //RB.AddForce(transform.forward * -6);
+                // PlayerHealth--;
+                //GameObject.Destroy(PlayerHearts[PlayerHearts.Count - 1]);
+                //PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
+                }
+          //  }
             
         }
     }
@@ -130,7 +139,7 @@ public class Player : MonoBehaviour {
     {
         return Enemy.GetComponent<Enemy>().AttackLocked;
     }
-    IEnumerator LoseHealth(GameObject Enemy)
+    IEnumerator KnockBack()
     {
         /*
         yield return new WaitUntil(() => Enemy.GetComponent<Enemy>().AttackLocked == false);
@@ -141,15 +150,27 @@ public class Player : MonoBehaviour {
             PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
         }
         */
-        HealthLocked = true;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1f);
+        RB.AddForce(transform.forward * -6);
         PlayerHealth--;
         GameObject.Destroy(PlayerHearts[PlayerHearts.Count - 1]);
         PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
-        HealthLocked = false;
+        //HealthLocked = true;
+
+        yield return null;
+        // HealthLocked = false;
+
 
     }
 
+    public void takedamage()
+    {
+        if (PlayerHealth > 0)
+        {
+            PlayerHealth--;
+            GameObject.Destroy(PlayerHearts[PlayerHearts.Count - 1]);
+            PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
+        }
 
-
+    }
 }
