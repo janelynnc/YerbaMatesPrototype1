@@ -38,27 +38,43 @@ public class EnemyPatrol : MonoBehaviour
         if (Vector2.Distance(transform.position,targets[i].position)> proximity ) //if we havent reached our target
         {
             Vector3 direction = targets[i].position - transform.position;
-           
+            print(direction);
+          //  print(direction);
 
             // Vector2 direction = gameObject.transform.position - targets[i].position; //find which direction we're going
-            //direction = direction.normalized;
+           // direction = direction.normalized;
 
-            if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y) && Mathf.Abs(direction.x) > Mathf.Epsilon)
+            /*if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y) && Mathf.Abs(direction.x) > Mathf.Epsilon)
             {
                 direction.y = 0f;
+                
             }
             else if (Mathf.Abs(direction.y) > Mathf.Epsilon)
             {
                 direction.x = 0f;
-            }
+                
+            }*/
 
+            if (Mathf.Abs(direction.x) > .01f)
+            {
+
+                if (Mathf.Abs(direction.y) > .01f)
+                {
+                    direction.y = 0f;
+                }
+                else
+                {
+                    direction.x = 0f;
+                }
+            }
             
-            if (direction.y > .75f) //up
+
+            if (direction.y > 0) //up
             {
                 EnemyMovement(270);
                
             }
-            else if (direction.y < -.75) //down
+            else if (direction.y < 0) //down
             {
                 EnemyMovement(90);
                 
@@ -105,7 +121,7 @@ public class EnemyPatrol : MonoBehaviour
     public void EnemyMovement(float angle)
     {
 
-        print(angle);
+        //print(angle);
         MovementState.SetFloat("z", angle);
        // MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 1);
