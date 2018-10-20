@@ -145,12 +145,12 @@ public class Enemy : MonoBehaviour {
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 1);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         PlayerTarget.gameObject.SendMessage("takedamage");
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 0);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         print("idle");
         AttackLocked = false;
         yield return null;
