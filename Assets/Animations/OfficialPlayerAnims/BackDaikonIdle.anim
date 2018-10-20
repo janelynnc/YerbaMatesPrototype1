@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: IdleUp
+  m_Name: BackDaikonIdle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -19,9 +19,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300020, guid: c476e36594458bd4bae544eddf024e78, type: 3}
+      value: {fileID: 21300002, guid: d129217bce97fb14c976f5de125a81f1, type: 3}
     - time: 1
-      value: {fileID: 21300020, guid: c476e36594458bd4bae544eddf024e78, type: 3}
+      value: {fileID: 21300002, guid: d129217bce97fb14c976f5de125a81f1, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -41,8 +41,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300020, guid: c476e36594458bd4bae544eddf024e78, type: 3}
-    - {fileID: 21300020, guid: c476e36594458bd4bae544eddf024e78, type: 3}
+    - {fileID: 21300002, guid: d129217bce97fb14c976f5de125a81f1, type: 3}
+    - {fileID: 21300002, guid: d129217bce97fb14c976f5de125a81f1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
