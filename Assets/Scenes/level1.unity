@@ -103284,7 +103284,7 @@ Transform:
   - {fileID: 2005498651}
   - {fileID: 275706451}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &707342678
 Tilemap:
@@ -103367,7 +103367,7 @@ Prefab:
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
@@ -103438,6 +103438,31 @@ Prefab:
       propertyPath: EnemyLeave
       value: The bear lost interest in you.
       objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_UseFullKinematicContacts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: MovementSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: collisionDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
   m_IsPrefabAsset: 0
@@ -103486,7 +103511,7 @@ Prefab:
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
@@ -103556,19 +103581,35 @@ Prefab:
     - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_BodyType
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_CollisionDetection
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114496516233918908, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: EnemyLeave
       value: The bear lost interest in you.
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 61903162664836988, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: MovementSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: collisionDistance
+      value: 2.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &890131186
@@ -103722,7 +103763,7 @@ Prefab:
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
@@ -103793,9 +103834,45 @@ Prefab:
       propertyPath: EnemyLeave
       value: The bear lost interest in you.
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: MovementSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: collisionDistance
+      value: 2.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1036017765 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1751432666390434, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+    type: 2}
+  m_PrefabInternal: {fileID: 823035939}
+--- !u!50 &1036017771
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1036017765}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1126709592
 GameObject:
   m_ObjectHideFlags: 0
@@ -103835,7 +103912,7 @@ Transform:
   m_Children:
   - {fileID: 1866837228}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1165331216
 Prefab:
@@ -104148,11 +104225,10 @@ Transform:
   m_GameObject: {fileID: 1305340158}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.9, y: -1.4, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_Children:
-  - {fileID: 1346294770}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1305340161
 CapsuleCollider2D:
@@ -104166,8 +104242,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.009614754, y: -0.024092102}
-  m_Size: {x: 0.64712715, y: 1.2621174}
+  m_Offset: {x: 0.009614746, y: -0.18522558}
+  m_Size: {x: 0.64712715, y: 0.64712715}
   m_Direction: 0
 --- !u!50 &1305340162
 Rigidbody2D:
@@ -104180,7 +104256,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -104421,11 +104497,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1346294767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.36, y: 0.7, z: -5}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -1.44, y: -0.35000002, z: -7.5}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
-  m_Father: {fileID: 1305340160}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1346294771
 MonoBehaviour:
@@ -104440,8 +104516,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bound: {fileID: 476933443}
   lookat: {fileID: 1305340160}
-  x: 5
-  y: 3
+  x: 1
+  y: 1
 --- !u!82 &1346294772
 AudioSource:
   m_ObjectHideFlags: 0
@@ -104769,7 +104845,7 @@ RectTransform:
   - {fileID: 2124707215}
   - {fileID: 669970033}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -104896,7 +104972,7 @@ Prefab:
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
@@ -104967,9 +105043,59 @@ Prefab:
       propertyPath: EnemyLeave
       value: The bear lost interest in you.
       objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_UseFullKinematicContacts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: MovementSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: collisionDistance
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1715758264 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1751432666390434, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+    type: 2}
+  m_PrefabInternal: {fileID: 982136012}
+--- !u!50 &1715758272
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1715758264}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1866837227
 GameObject:
   m_ObjectHideFlags: 0
@@ -106092,7 +106218,7 @@ Prefab:
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 224861064571398018, guid: 3fd42863dc35d004a8d7edda72c21ad6,
         type: 2}
@@ -106162,6 +106288,31 @@ Prefab:
         type: 2}
       propertyPath: EnemyLeave
       value: The bear lost interest in you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_UseFullKinematicContacts
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50772845666201224, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: MovementSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114599665794864038, guid: 3fd42863dc35d004a8d7edda72c21ad6,
+        type: 2}
+      propertyPath: collisionDistance
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fd42863dc35d004a8d7edda72c21ad6, type: 2}
@@ -113734,7 +113885,7 @@ RectTransform:
   m_Children:
   - {fileID: 95328845}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

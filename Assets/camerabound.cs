@@ -26,7 +26,7 @@ public class camerabound : MonoBehaviour {
 
     private void LateUpdate()
     {
-       /* Vector3 delta = Vector3.zero;
+        Vector3 delta = Vector3.zero;
         float dx = lookat.position.x - transform.position.x;
         if (Mathf.Abs(dx) > x)
         {
@@ -52,7 +52,7 @@ public class camerabound : MonoBehaviour {
             }
         }
 
-        transform.position = transform.position + delta;*/
+        transform.position = transform.position + delta;
         float clampX = Mathf.Clamp(transform.position.x, minBound.x + width, maxBound.x - width);
         float clampY = Mathf.Clamp(transform.position.y, minBound.y + height, maxBound.y - height);
         transform.position = new Vector3(clampX, clampY, transform.position.z);

@@ -35,6 +35,8 @@ public class EnemyBehavior : MonoBehaviour {
                 gameObject.GetComponent<Enemy>().enabled = true; //start following
             }
         }
+
+
         
        
 		
