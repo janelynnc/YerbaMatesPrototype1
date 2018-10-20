@@ -7,7 +7,7 @@ public class EnemyPatrol : MonoBehaviour
     private Animator MovementState;
     private Transform PlayerTarget;
     private Vector2 MovementDirection;
-
+    private AudioSource walking;
     [SerializeField]
     private float MovementSpeed;
     private float StartTime;
@@ -25,6 +25,7 @@ public class EnemyPatrol : MonoBehaviour
 
         MovementState = GetComponent<Animator>();
         EnemyMovement(targets[i].transform.eulerAngles.z);
+        walking = GetComponent<AudioSource>();
     }
     private void OnEnable()
     {
@@ -93,7 +94,10 @@ public class EnemyPatrol : MonoBehaviour
             
             //gameObject.transform.position = Vector2.MoveTowards(transform.position, targets[i].position, MovementSpeed * Time.deltaTime);
             gameObject.transform.position = Vector2.MoveTowards(transform.position, transform.position+direction, MovementSpeed * Time.deltaTime);
-
+            if (!walking.isPlaying)
+            {
+                walking.Play();
+            }
             //Call EnemyMovement with targets[i].transform.rotation.z
 
         }
@@ -112,7 +116,11 @@ public class EnemyPatrol : MonoBehaviour
                 i++; // move on to the next index
             }
             StartTime = Time.time;
-            TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed; 
+            TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed;
+            if (walking.isPlaying)
+            {
+                walking.Stop();
+            }
         }
         
         

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using UnityEngine.Audio;
 public class Player : MonoBehaviour {
 
     public List<TileBase> treetiles;
@@ -12,7 +13,9 @@ public class Player : MonoBehaviour {
     public List<TileBase> bushtiles;
     public List<TileBase> bush2tiles;
     public List<TileBase> tree2tiles;
-    
+    public List<AudioClip> clips;
+    private AudioSource walking;
+    public GameObject map;
 
     private Rigidbody2D RB;
     private Animator MovementState;
@@ -23,6 +26,8 @@ public class Player : MonoBehaviour {
     public Enemy IsAttacking;
     public bool HealthLocked = false;
     public float FadeRate;
+    public bool HeartLocked = false;
+    public int FadeHeartCalls = 0;
     public string EnemyLeave;
     [SerializeField]
     private float MovementSpeed; // set value in inspector
@@ -33,6 +38,7 @@ public class Player : MonoBehaviour {
         PlayerHealth = PlayerHearts.Count;
         RB = GetComponent<Rigidbody2D>();
         MovementState = GetComponent<Animator>();
+        walking = GetComponent<AudioSource>();
 	}
 
     // Update is called once per frame
@@ -55,10 +61,20 @@ public class Player : MonoBehaviour {
         if(MovementDirection.x != 0 || MovementDirection.y != 0)
         {
             AnimatedMovement(MovementDirection);
+            if (!walking.isPlaying)
+            {
+                walking.loop = true;
+                walking.clip = clips[0];
+                walking.Play();
+            }
         }
         else
         {
             MovementState.SetLayerWeight(1, 0);
+            if (walking.isPlaying)
+            {
+                walking.Stop();
+            }
         }
     }
 
@@ -103,6 +119,7 @@ public class Player : MonoBehaviour {
         //print(MovementDirection);
     }
 
+    
     // Collision - checking
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -114,7 +131,10 @@ public class Player : MonoBehaviour {
            GameObject Map = GameObject.FindGameObjectWithTag("Map");
            if(textbox.activeInHierarchy == false && Map != null)
             {
-                StartCoroutine("losemap");
+                GameObject minimap = GameObject.Instantiate(map,
+                    gameObject.transform.position+new Vector3(MovementDirection.x,MovementDirection.y,0)
+                    ,Quaternion.identity);
+                StartCoroutine("losemap",minimap);
             }
         }
         if(PlayerCollidesWith.tag == "Enemy")
@@ -177,25 +197,50 @@ public class Player : MonoBehaviour {
 
     public void takedamage()
     {
-        if (PlayerHealth > 0)
+     if (PlayerHealth > 0)
+       {
+           
+        if (!HealthLocked) 
         {
-            PlayerHealth--;
             StartCoroutine("FadeHeart");
-            
         }
+        else
+        {
+            FadeHeartCalls++;//put a call on the list
+        }
+       }
 
     }
 
     IEnumerator FadeHeart()
     {
-
+        if (HealthLocked)
+        {
+            FadeHeartCalls++;
+            yield return null;
+        }
+        HealthLocked = true;
+        PlayerHealth--;
+        walking.clip = clips[1];
+        if (!walking.isPlaying)
+        {
+            walking.Play();
+            walking.loop = false;
+        }
         for (float i = 1; i > 0f; i -= .1f)
         {
+            
             PlayerHearts[PlayerHearts.Count - 1].GetComponent<Image>().color = new Color(1, 1, 1, i);
             yield return new WaitForSecondsRealtime(FadeRate);
         }
         PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
-        if(PlayerHearts.Count == 0)
+        if (FadeHeartCalls > 0 && PlayerHearts.Count>0)
+        {
+            FadeHeartCalls--;
+            //HealthLocked = false;
+            yield return StartCoroutine("FadeHeart");
+        }
+        if (PlayerHearts.Count == 0)
         {
             if (TileArrayCounter < treetiles.Count - 1)
             {
@@ -209,23 +254,31 @@ public class Player : MonoBehaviour {
                 }
                 TileArrayCounter++;
             }
+            textbox.SetActive(true);
+            GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = EnemyLeave;
+            Time.timeScale = 0;
+            HealthLocked = false;
+            yield return null;
         }
+        HealthLocked = false;
         yield return null;
     }
 
-    IEnumerator losemap()
+    IEnumerator losemap(GameObject minimap)
     {
-        textbox.SetActive(true);
-        GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = maptext;
-        Time.timeScale = 0;
+        
         GameObject Map = GameObject.FindGameObjectWithTag("Map");
         if (Map != null)
         {
             for (float i = 1; i > 0f; i -= .1f)
             {
+                minimap.GetComponent<SpriteRenderer>().color =
+                    Vector4.Scale(minimap.GetComponent<SpriteRenderer>().color,
+                    new Vector4(1f,1f,1f,.8f)); 
                 Map.GetComponent<Image>().color = new Color(1, 1, 1, i);
                 yield return new WaitForSecondsRealtime(FadeRate);
             }
+            GameObject.Destroy(minimap);
             GameObject.Destroy(Map);
         }
         if (TileArrayCounter < treetiles.Count - 1)
@@ -236,6 +289,9 @@ public class Player : MonoBehaviour {
             tilemaps[0].SwapTile(tree2tiles[TileArrayCounter], tree2tiles[TileArrayCounter + 1]);
             TileArrayCounter++;
         }
+        textbox.SetActive(true);
+        GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = maptext;
+        Time.timeScale = 0;
         yield return null;
 
     }

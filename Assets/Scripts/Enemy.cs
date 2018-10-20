@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour {
     public float FadeRate;
     public string EnemyLeave;
     public GameObject textbox;
+    private AudioSource walking;
     // private Vector3 direction;
 
     [SerializeField]
@@ -24,7 +25,7 @@ public class Enemy : MonoBehaviour {
     void Start () {
         PlayerTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         MovementState = GetComponent<Animator>();
-
+        walking = GetComponent<AudioSource>();
         AttackLocked = false;
     }
 
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour {
 
     public void OnDisable()
     {
-        StartCoroutine("EnemyAttack");
+        //StartCoroutine("EnemyAttack");
         
     }
 
@@ -64,6 +65,10 @@ public class Enemy : MonoBehaviour {
     {
         if (Vector2.Distance(transform.position, PlayerTarget.position) > StoppingDistance) //if we're further than stopping distance
         {
+            if (!walking.isPlaying)
+            {
+                walking.Play();
+            }
 
             MovementSpeed = MaxSpeed;
             Vector3 direction = PlayerTarget.position - transform.position;
@@ -123,12 +128,16 @@ public class Enemy : MonoBehaviour {
         else
         {
             // attack player
-            
-            
-           /* MovementState.SetLayerWeight(0, 0);
-            MovementState.SetLayerWeight(1, 0);
-            MovementState.SetLayerWeight(2, 1);
-            */
+
+
+            /* MovementState.SetLayerWeight(0, 0);
+             MovementState.SetLayerWeight(1, 0);
+             MovementState.SetLayerWeight(2, 1);
+             */
+            if (!walking.isPlaying)
+            {
+                walking.Stop();
+            }
             if (!AttackLocked)
             {
                 StartCoroutine("Attack");
@@ -145,8 +154,9 @@ public class Enemy : MonoBehaviour {
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 1);
-        yield return new WaitForSeconds(0.5f);
         PlayerTarget.gameObject.SendMessage("takedamage");
+        yield return new WaitForSeconds(0.5f);
+        
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 0);
