@@ -1,8 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 public class Player : MonoBehaviour {
+
+    public List<TileBase> treetiles;
+    private int TileArrayCounter = 0;
+    public List<Tilemap> tilemaps;
+
+    public List<TileBase> bushtiles;
+    public List<TileBase> bush2tiles;
+    public List<TileBase> tree2tiles;
+    
 
     private Rigidbody2D RB;
     private Animator MovementState;
@@ -12,10 +22,12 @@ public class Player : MonoBehaviour {
     public List<GameObject> PlayerHearts;
     public Enemy IsAttacking;
     public bool HealthLocked = false;
- 
+    public float FadeRate;
+    public string EnemyLeave;
     [SerializeField]
     private float MovementSpeed; // set value in inspector
-
+    public GameObject textbox;
+    public string maptext;
 	// Use this for initialization
 	void Start () {
         PlayerHealth = PlayerHearts.Count;
@@ -36,8 +48,8 @@ public class Player : MonoBehaviour {
     {
         // Lets player move
         //print(MovementDirection);
-        transform.Translate(MovementDirection * MovementSpeed * Time.deltaTime);
-        //RB.velocity = MovementDirection * MovementSpeed;
+        //transform.Translate(MovementDirection * MovementSpeed * Time.deltaTime);
+        RB.velocity = MovementDirection * MovementSpeed * Time.deltaTime;
         // If the player is moving, play walking animation
         // Otherwise, play idle animation
         if(MovementDirection.x != 0 || MovementDirection.y != 0)
@@ -99,11 +111,10 @@ public class Player : MonoBehaviour {
         GameObject PlayerCollidesWith = collision.gameObject;
         if(PlayerCollidesWith.tag == "Water")
         {
-            GameObject Map = GameObject.FindGameObjectWithTag("Map");
-            if (Map != null)
+           GameObject Map = GameObject.FindGameObjectWithTag("Map");
+           if(textbox.activeInHierarchy == false && Map != null)
             {
-
-                GameObject.Destroy(Map);
+                StartCoroutine("losemap");
             }
         }
         if(PlayerCollidesWith.tag == "Enemy")
@@ -163,14 +174,69 @@ public class Player : MonoBehaviour {
 
     }
 
+
     public void takedamage()
     {
         if (PlayerHealth > 0)
         {
             PlayerHealth--;
-            GameObject.Destroy(PlayerHearts[PlayerHearts.Count - 1]);
-            PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
+            StartCoroutine("FadeHeart");
+            
         }
+
+    }
+
+    IEnumerator FadeHeart()
+    {
+
+        for (float i = 1; i > 0f; i -= .1f)
+        {
+            PlayerHearts[PlayerHearts.Count - 1].GetComponent<Image>().color = new Color(1, 1, 1, i);
+            yield return new WaitForSecondsRealtime(FadeRate);
+        }
+        PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
+        if(PlayerHearts.Count == 0)
+        {
+            if (TileArrayCounter < treetiles.Count - 1)
+            {
+                if (TileArrayCounter < treetiles.Count - 1)
+                {
+                    tilemaps[0].SwapTile(treetiles[TileArrayCounter], treetiles[TileArrayCounter + 1]);
+                    tilemaps[1].SwapTile(bushtiles[TileArrayCounter], bushtiles[TileArrayCounter + 1]);
+                    tilemaps[1].SwapTile(bush2tiles[TileArrayCounter], bush2tiles[TileArrayCounter + 1]);
+                    tilemaps[0].SwapTile(tree2tiles[TileArrayCounter], tree2tiles[TileArrayCounter + 1]);
+                    TileArrayCounter++;
+                }
+                TileArrayCounter++;
+            }
+        }
+        yield return null;
+    }
+
+    IEnumerator losemap()
+    {
+        textbox.SetActive(true);
+        GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = maptext;
+        Time.timeScale = 0;
+        GameObject Map = GameObject.FindGameObjectWithTag("Map");
+        if (Map != null)
+        {
+            for (float i = 1; i > 0f; i -= .1f)
+            {
+                Map.GetComponent<Image>().color = new Color(1, 1, 1, i);
+                yield return new WaitForSecondsRealtime(FadeRate);
+            }
+            GameObject.Destroy(Map);
+        }
+        if (TileArrayCounter < treetiles.Count - 1)
+        {
+            tilemaps[0].SwapTile(treetiles[TileArrayCounter], treetiles[TileArrayCounter + 1]);
+            tilemaps[1].SwapTile(bushtiles[TileArrayCounter], bushtiles[TileArrayCounter + 1]);
+            tilemaps[1].SwapTile(bush2tiles[TileArrayCounter], bush2tiles[TileArrayCounter + 1]);
+            tilemaps[0].SwapTile(tree2tiles[TileArrayCounter], tree2tiles[TileArrayCounter + 1]);
+            TileArrayCounter++;
+        }
+        yield return null;
 
     }
 }

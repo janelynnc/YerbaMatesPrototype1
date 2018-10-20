@@ -38,7 +38,7 @@ public class EnemyPatrol : MonoBehaviour
         if (Vector2.Distance(transform.position,targets[i].position)> proximity ) //if we havent reached our target
         {
             Vector3 direction = targets[i].position - transform.position;
-            print(direction);
+           // print(direction);
           //  print(direction);
 
             // Vector2 direction = gameObject.transform.position - targets[i].position; //find which direction we're going

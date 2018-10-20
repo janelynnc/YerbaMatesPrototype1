@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class EnemyBehavior : MonoBehaviour {
     public Transform PlayerPos;
     public float MinDistance;
     public Player PlayerHealth;
-    
+
+
 	// Use this for initialization
 	void Start () {
 		
@@ -26,6 +27,7 @@ public class EnemyBehavior : MonoBehaviour {
             {
                 gameObject.GetComponent<EnemyPatrol>().enabled = true; //stop patrolling
                 gameObject.GetComponent<Enemy>().enabled = false;
+                
             }
             else
             {
@@ -37,4 +39,5 @@ public class EnemyBehavior : MonoBehaviour {
        
 		
 	}
+   
 }

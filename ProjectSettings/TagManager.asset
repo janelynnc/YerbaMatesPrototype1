@@ -9,6 +9,8 @@ TagManager:
   - Map
   - Grass
   - dirt
+  - textbox
+  - textboxtext
   layers:
   - Default
   - TransparentFX

@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Enemy : MonoBehaviour {
     private Animator MovementState;
     private Transform PlayerTarget;
     public bool AttackLocked;
-   // private Vector3 direction;
-   
+    public float FadeRate;
+    public string EnemyLeave;
+    public GameObject textbox;
+    // private Vector3 direction;
+
     [SerializeField]
     private float StoppingDistance;
 
@@ -34,6 +37,20 @@ public class Enemy : MonoBehaviour {
 
     }
 
+    public void OnDisable()
+    {
+        StartCoroutine("EnemyAttack");
+        
+    }
+
+    IEnumerator EnemyAttack()
+    {
+        textbox.SetActive(true);
+        GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = EnemyLeave;
+        Time.timeScale = 0;
+        yield return null;
+
+    }
     public void EnemyMovement(float angle)
     {
      
