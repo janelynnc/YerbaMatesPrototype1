@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.Audio;
-public class Player : MonoBehaviour {
+using System.Linq;
+
+public class Player : MonoBehaviour
+{
 
     public List<TileBase> treetiles;
     private int TileArrayCounter = 0;
@@ -33,22 +36,27 @@ public class Player : MonoBehaviour {
     private float MovementSpeed; // set value in inspector
     public GameObject textbox;
     public string maptext;
-	// Use this for initialization
-	void Start () {
+    public string actionToPerform = null;
+    public List<string> KeyPressed;
+    public bool lostMap = false;
+    // Use this for initialization
+    void Start()
+    {
         PlayerHealth = PlayerHearts.Count;
         RB = GetComponent<Rigidbody2D>();
         MovementState = GetComponent<Animator>();
         walking = GetComponent<AudioSource>();
-	}
+    }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         //print("Hearts Left = " + PlayerHealth);
         GetKeyInput();
         PlayerMovement();
-        
+
     }
- 
+
     // Player movement function
     public void PlayerMovement()
     {
@@ -58,7 +66,7 @@ public class Player : MonoBehaviour {
         RB.velocity = MovementDirection * MovementSpeed * Time.deltaTime;
         // If the player is moving, play walking animation
         // Otherwise, play idle animation
-        if(MovementDirection.x != 0 || MovementDirection.y != 0)
+        if (MovementDirection.x != 0 || MovementDirection.y != 0)
         {
             AnimatedMovement(MovementDirection);
             if (!walking.isPlaying)
@@ -93,76 +101,144 @@ public class Player : MonoBehaviour {
         MovementDirection = Vector2.zero;
         //print(Input.anyKey);
         // Move up
-        if ((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
+        if (Input.anyKey)
         {
-            MovementDirection += Vector2.up;
-            
+            if ((Input.GetKey(KeyCode.UpArrow)) || (Input.GetKey(KeyCode.W)))
+            {
+                if (!KeyPressed.Contains("up"))
+                {
+                    KeyPressed.Add("up");
+                }
+            }
+            else
+            {
+                if (KeyPressed.Contains("up"))
+                {
+                    KeyPressed.Remove("up");
+                }
+            }
+
+            // Move left
+            if ((Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)))
+            {
+                if (!KeyPressed.Contains("left"))
+                {
+                    KeyPressed.Add("left");
+                }
+            }
+            else
+            {
+                if (KeyPressed.Contains("left"))
+                {
+                    KeyPressed.Remove("left");
+                }
+            }
+
+            // Move down
+            if ((Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)))
+            {
+                if (!KeyPressed.Contains("down"))
+                {
+                    KeyPressed.Add("down");
+                }
+            }
+            else
+            {
+                if (KeyPressed.Contains("down"))
+                {
+                    KeyPressed.Remove("down");
+                }
+            }
+
+            // Move right
+            if ((Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)))
+            {
+                if (!KeyPressed.Contains("right"))
+                {
+                    KeyPressed.Add("right");
+                }
+            }
+            else
+            {
+                if (KeyPressed.Contains("right"))
+                {
+                    KeyPressed.Remove("right");
+                }
+            }
+
+            if (KeyPressed.Count > 0) {
+                actionToPerform = KeyPressed[KeyPressed.Count - 1];
+                switch (actionToPerform)
+                {
+                    case "up":
+                        MovementDirection += Vector2.up;
+                        break;
+                    case "left":
+                        MovementDirection += Vector2.left;
+                        break;
+                    case "down":
+                        MovementDirection += Vector2.down;
+                        break;
+                    case "right":
+                        MovementDirection += Vector2.right;
+                        break;
+                }
+            }
+        }
+        else
+        {
+            KeyPressed.Clear();
+            actionToPerform = null;
         }
 
-        // Move left
-        else if ((Input.GetKey(KeyCode.LeftArrow)) || (Input.GetKey(KeyCode.A)))
-        {
-            MovementDirection += Vector2.left;
-        }
-
-        // Move down
-        else if ((Input.GetKey(KeyCode.DownArrow)) || (Input.GetKey(KeyCode.S)))
-        {
-            MovementDirection += Vector2.down;
-        }
-
-        // Move right
-        else if ( (Input.GetKey(KeyCode.RightArrow)) || (Input.GetKey(KeyCode.D)) )
-        {
-            MovementDirection += Vector2.right;
-        }
         //print(MovementDirection);
     }
 
-    
+
     // Collision - checking
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
         print("collide");
         GameObject PlayerCollidesWith = collision.gameObject;
-        if(PlayerCollidesWith.tag == "Water")
+        if (PlayerCollidesWith.tag == "Water" && lostMap == false)
         {
-           GameObject Map = GameObject.FindGameObjectWithTag("Map");
-           if(textbox.activeInHierarchy == false && Map != null)
+            lostMap = true;
+            GameObject Map = GameObject.FindGameObjectWithTag("Map");
+            if (textbox.activeInHierarchy == false && Map != null)
             {
                 GameObject minimap = GameObject.Instantiate(map,
-                    gameObject.transform.position+new Vector3(MovementDirection.x,MovementDirection.y,0)
-                    ,Quaternion.identity);
-                StartCoroutine("losemap",minimap);
+                    gameObject.transform.position + new Vector3(MovementDirection.x, MovementDirection.y, 0)
+                    , Quaternion.identity);
+                StartCoroutine("losemap", minimap);
             }
         }
-        if(PlayerCollidesWith.tag == "Enemy")
+        if (PlayerCollidesWith.tag == "Enemy")
         {
-            
-           // GameObject Enemy = PlayerCollidesWith.gameObject;
+
+            // GameObject Enemy = PlayerCollidesWith.gameObject;
             //if (Enemy.GetComponent<Enemy>().AttackLocked)
-          //  {
-                /*
-                
-                if (!HealthLocked)
-                {
-                    print("lose");
-                    //StartCoroutine(LoseHealth(Enemy));
-                    //StopCoroutine("LoseHealth");
-                }
-                */
-               if (PlayerHealth > 0)
-                {
+            //  {
+            /*
+
+            if (!HealthLocked)
+            {
+                print("lose");
+                //StartCoroutine(LoseHealth(Enemy));
+                //StopCoroutine("LoseHealth");
+            }
+            */
+            if (PlayerHealth > 0)
+            {
 
                 //StartCoroutine("KnockBack");
                 //RB.AddForce(transform.forward * -6);
                 // PlayerHealth--;
                 //GameObject.Destroy(PlayerHearts[PlayerHearts.Count - 1]);
                 //PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
-                }
-          //  }
-            
+            }
+            //  }
+
         }
     }
 
@@ -197,18 +273,18 @@ public class Player : MonoBehaviour {
 
     public void takedamage()
     {
-     if (PlayerHealth > 0)
-       {
-           
-        if (!HealthLocked) 
+        if (PlayerHealth > 0)
         {
-            StartCoroutine("FadeHeart");
+
+            if (!HealthLocked)
+            {
+                StartCoroutine("FadeHeart");
+            }
+            else
+            {
+                FadeHeartCalls++;//put a call on the list
+            }
         }
-        else
-        {
-            FadeHeartCalls++;//put a call on the list
-        }
-       }
 
     }
 
@@ -229,12 +305,12 @@ public class Player : MonoBehaviour {
         }
         for (float i = 1; i > 0f; i -= .1f)
         {
-            
+
             PlayerHearts[PlayerHearts.Count - 1].GetComponent<Image>().color = new Color(1, 1, 1, i);
             yield return new WaitForSecondsRealtime(FadeRate);
         }
         PlayerHearts.RemoveAt(PlayerHearts.Count - 1);
-        if (FadeHeartCalls > 0 && PlayerHearts.Count>0)
+        if (FadeHeartCalls > 0 && PlayerHearts.Count > 0)
         {
             FadeHeartCalls--;
             //HealthLocked = false;
@@ -244,14 +320,10 @@ public class Player : MonoBehaviour {
         {
             if (TileArrayCounter < treetiles.Count - 1)
             {
-                if (TileArrayCounter < treetiles.Count - 1)
-                {
-                    tilemaps[0].SwapTile(treetiles[TileArrayCounter], treetiles[TileArrayCounter + 1]);
-                    tilemaps[1].SwapTile(bushtiles[TileArrayCounter], bushtiles[TileArrayCounter + 1]);
-                    tilemaps[1].SwapTile(bush2tiles[TileArrayCounter], bush2tiles[TileArrayCounter + 1]);
-                    tilemaps[0].SwapTile(tree2tiles[TileArrayCounter], tree2tiles[TileArrayCounter + 1]);
-                    TileArrayCounter++;
-                }
+                tilemaps[0].SwapTile(treetiles[TileArrayCounter], treetiles[TileArrayCounter + 1]);
+                tilemaps[1].SwapTile(bushtiles[TileArrayCounter], bushtiles[TileArrayCounter + 1]);
+                tilemaps[1].SwapTile(bush2tiles[TileArrayCounter], bush2tiles[TileArrayCounter + 1]);
+                tilemaps[0].SwapTile(tree2tiles[TileArrayCounter], tree2tiles[TileArrayCounter + 1]);
                 TileArrayCounter++;
             }
             textbox.SetActive(true);
@@ -266,7 +338,7 @@ public class Player : MonoBehaviour {
 
     IEnumerator losemap(GameObject minimap)
     {
-        
+
         GameObject Map = GameObject.FindGameObjectWithTag("Map");
         if (Map != null)
         {
@@ -274,7 +346,7 @@ public class Player : MonoBehaviour {
             {
                 minimap.GetComponent<SpriteRenderer>().color =
                     Vector4.Scale(minimap.GetComponent<SpriteRenderer>().color,
-                    new Vector4(1f,1f,1f,.8f)); 
+                    new Vector4(1f, 1f, 1f, .8f));
                 Map.GetComponent<Image>().color = new Color(1, 1, 1, i);
                 yield return new WaitForSecondsRealtime(FadeRate);
             }
