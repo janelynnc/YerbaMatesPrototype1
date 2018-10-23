@@ -7,7 +7,7 @@ public class EnemyPatrol : MonoBehaviour
     private Animator MovementState;
     private Transform PlayerTarget;
     private Vector2 MovementDirection;
-
+    private AudioSource walking;
     [SerializeField]
     private float MovementSpeed;
     private float StartTime;
@@ -17,6 +17,8 @@ public class EnemyPatrol : MonoBehaviour
     public List<Transform> targets;
     private int i = 0;
     public float proximity;
+    public float collisionDistance;
+    private GameObject player;
     // Use this for initialization
     void Start()
     {
@@ -25,6 +27,8 @@ public class EnemyPatrol : MonoBehaviour
 
         MovementState = GetComponent<Animator>();
         EnemyMovement(targets[i].transform.eulerAngles.z);
+        walking = GetComponent<AudioSource>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
     private void OnEnable()
     {
@@ -35,10 +39,11 @@ public class EnemyPatrol : MonoBehaviour
     void Update()
     {
 
-        if (Vector2.Distance(transform.position,targets[i].position)> proximity ) //if we havent reached our target
+        if (Vector2.Distance(transform.position,targets[i].position)> proximity && Vector2.Distance(player.transform.position,transform.position)>collisionDistance) //if we havent reached our target
         {
+            print(Vector2.Distance(player.transform.position, transform.position));
             Vector3 direction = targets[i].position - transform.position;
-            print(direction);
+           // print(direction);
           //  print(direction);
 
             // Vector2 direction = gameObject.transform.position - targets[i].position; //find which direction we're going
@@ -89,16 +94,21 @@ public class EnemyPatrol : MonoBehaviour
                 EnemyMovement(0);
                 
             }
-            
-            
-            //gameObject.transform.position = Vector2.MoveTowards(transform.position, targets[i].position, MovementSpeed * Time.deltaTime);
-            gameObject.transform.position = Vector2.MoveTowards(transform.position, transform.position+direction, MovementSpeed * Time.deltaTime);
 
+
+
+            gameObject.transform.position = Vector2.MoveTowards(transform.position, transform.position+direction, MovementSpeed * Time.deltaTime);
+            //RB.velocity = direction * MovementSpeed * Time.deltaTime;
+            if (!walking.isPlaying)
+            {
+                walking.Play();
+            }
             //Call EnemyMovement with targets[i].transform.rotation.z
 
         }
         else 
         {
+            //RB.velocity = Vector3.zero;
             //play idle animation here 
             //StartCoroutine("idle");
             if (i == targets.Count - 1) //If we reached the last target
@@ -112,12 +122,17 @@ public class EnemyPatrol : MonoBehaviour
                 i++; // move on to the next index
             }
             StartTime = Time.time;
-            TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed; 
+            TotalTime = Vector3.Distance(gameObject.transform.position, targets[i].position) / MovementSpeed;
+            if (walking.isPlaying)
+            {
+                walking.Stop();
+            }
         }
         
         
     }
 
+  
     public void EnemyMovement(float angle)
     {
 

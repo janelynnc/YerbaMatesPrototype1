@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Enemy : MonoBehaviour {
     private Animator MovementState;
     private Transform PlayerTarget;
     public bool AttackLocked;
-   // private Vector3 direction;
-   
+    public float FadeRate;
+    public string EnemyLeave;
+    public GameObject textbox;
+    private AudioSource walking;
+    // private Vector3 direction;
+
     [SerializeField]
     private float StoppingDistance;
 
@@ -21,7 +25,7 @@ public class Enemy : MonoBehaviour {
     void Start () {
         PlayerTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         MovementState = GetComponent<Animator>();
-
+        walking = GetComponent<AudioSource>();
         AttackLocked = false;
     }
 
@@ -34,6 +38,20 @@ public class Enemy : MonoBehaviour {
 
     }
 
+    public void OnDisable()
+    {
+        //StartCoroutine("EnemyAttack");
+        
+    }
+
+    IEnumerator EnemyAttack()
+    {
+        textbox.SetActive(true);
+        GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = EnemyLeave;
+        Time.timeScale = 0;
+        yield return null;
+
+    }
     public void EnemyMovement(float angle)
     {
      
@@ -47,6 +65,10 @@ public class Enemy : MonoBehaviour {
     {
         if (Vector2.Distance(transform.position, PlayerTarget.position) > StoppingDistance) //if we're further than stopping distance
         {
+            if (!walking.isPlaying)
+            {
+                walking.Play();
+            }
 
             MovementSpeed = MaxSpeed;
             Vector3 direction = PlayerTarget.position - transform.position;
@@ -106,12 +128,16 @@ public class Enemy : MonoBehaviour {
         else
         {
             // attack player
-            
-            
-           /* MovementState.SetLayerWeight(0, 0);
-            MovementState.SetLayerWeight(1, 0);
-            MovementState.SetLayerWeight(2, 1);
-            */
+
+
+            /* MovementState.SetLayerWeight(0, 0);
+             MovementState.SetLayerWeight(1, 0);
+             MovementState.SetLayerWeight(2, 1);
+             */
+            if (!walking.isPlaying)
+            {
+                walking.Stop();
+            }
             if (!AttackLocked)
             {
                 StartCoroutine("Attack");
@@ -128,12 +154,13 @@ public class Enemy : MonoBehaviour {
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 1);
-        yield return new WaitForSeconds(2f);
         PlayerTarget.gameObject.SendMessage("takedamage");
+        yield return new WaitForSeconds(0.5f);
+        
         MovementState.SetLayerWeight(0, 0);
         MovementState.SetLayerWeight(1, 0);
         MovementState.SetLayerWeight(2, 0);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         print("idle");
         AttackLocked = false;
         yield return null;
