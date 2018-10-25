@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public List<TileBase> treetiles;
     private int TileArrayCounter = 0;
     public List<Tilemap> tilemaps;
+    public Tilemap Grass;
+    public Tilemap Water;
 
     public List<TileBase> bushtiles;
     public List<TileBase> bush2tiles;
@@ -19,6 +21,8 @@ public class Player : MonoBehaviour
     public List<AudioClip> clips;
     private AudioSource walking;
     public GameObject map;
+    public GameObject bagprefab;
+    public string bagtext;
 
     private Rigidbody2D RB;
     private Animator MovementState;
@@ -31,6 +35,7 @@ public class Player : MonoBehaviour
     public float FadeRate;
     public bool HeartLocked = false;
     public int FadeHeartCalls = 0;
+    public AudioSource BGKMusic;
     public string EnemyLeave;
     [SerializeField]
     private float MovementSpeed; // set value in inspector
@@ -54,7 +59,10 @@ public class Player : MonoBehaviour
         //print("Hearts Left = " + PlayerHealth);
         GetKeyInput();
         PlayerMovement();
-
+        if (TileArrayCounter >= treetiles.Count - 1)
+        {
+            BGKMusic.pitch = -1;
+        }
     }
 
     // Player movement function
@@ -242,6 +250,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void dropBackpack() {
+        StartCoroutine("losebag");
+    }
+
     public bool isAttacking(GameObject Enemy)
     {
         return Enemy.GetComponent<Enemy>().AttackLocked;
@@ -335,10 +347,49 @@ public class Player : MonoBehaviour
         HealthLocked = false;
         yield return null;
     }
+    IEnumerator losebag()
+    {
+        Time.timeScale = 0;
+        GameObject backpack = GameObject.FindGameObjectWithTag("backpack");
+        if (backpack != null)
+        {
+            GameObject bag = GameObject.Instantiate(bagprefab,
+                    gameObject.transform.position + new Vector3(MovementDirection.x, MovementDirection.y, 0)
+                    , Quaternion.identity);
+            for (float i = 1; i > 0f; i -= .1f)
+            {
+                bag.GetComponent<SpriteRenderer>().color =
+                    Vector4.Scale(bag.GetComponent<SpriteRenderer>().color,
+                    new Vector4(1f, 1f, 1f, .8f));
+                backpack.GetComponent<Image>().color = new Color(1, 1, 1, i);
+                yield return new WaitForSecondsRealtime(FadeRate);
+            }
+            GameObject.Destroy(backpack);
+            GameObject.Destroy(backpack);
+            Color magenta = new Vector4(1f, 0f, 1f, 1f);
+            Color murky = new Vector4(1f, 0.5f, 0f, 1f);
+            Grass.color = magenta;
+            Water.color = murky;
+
+        }
+        if (TileArrayCounter < treetiles.Count - 1)
+        {
+            tilemaps[0].SwapTile(treetiles[TileArrayCounter], treetiles[TileArrayCounter + 1]);
+            tilemaps[1].SwapTile(bushtiles[TileArrayCounter], bushtiles[TileArrayCounter + 1]);
+            tilemaps[1].SwapTile(bush2tiles[TileArrayCounter], bush2tiles[TileArrayCounter + 1]);
+            tilemaps[0].SwapTile(tree2tiles[TileArrayCounter], tree2tiles[TileArrayCounter + 1]);
+            TileArrayCounter++;
+        }
+        textbox.SetActive(true);
+        GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = bagtext;
+        yield return null;
+
+    }
 
     IEnumerator losemap(GameObject minimap)
     {
 
+        Time.timeScale = 0;
         GameObject Map = GameObject.FindGameObjectWithTag("Map");
         if (Map != null)
         {
@@ -352,6 +403,11 @@ public class Player : MonoBehaviour
             }
             GameObject.Destroy(minimap);
             GameObject.Destroy(Map);
+            Color magenta = new Vector4(1f, 0f, 1f, 1f);
+            Color murky = new Vector4(1f, 0.5f, 0f, 1f);
+            Grass.color = magenta;
+            Water.color = murky;
+            
         }
         if (TileArrayCounter < treetiles.Count - 1)
         {
@@ -363,7 +419,6 @@ public class Player : MonoBehaviour
         }
         textbox.SetActive(true);
         GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = maptext;
-        Time.timeScale = 0;
         yield return null;
 
     }

@@ -11,6 +11,7 @@ TagManager:
   - dirt
   - textbox
   - textboxtext
+  - backpack
   layers:
   - Default
   - TransparentFX
