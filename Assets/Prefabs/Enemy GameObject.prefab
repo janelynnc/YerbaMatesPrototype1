@@ -406,6 +406,7 @@ MonoBehaviour:
   - {fileID: 4778387144859802}
   - {fileID: 4923796042197052}
   proximity: 0.2
+  collisionDistance: 0
 --- !u!114 &114924049488514108
 MonoBehaviour:
   m_ObjectHideFlags: 1
