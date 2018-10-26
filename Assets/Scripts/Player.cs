@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     public List<Tilemap> tilemaps;
     public Tilemap Grass;
     public Tilemap Water;
+    public Tilemap WaterWalkable;
+    public Tilemap WaterProp;
 
     public List<TileBase> bushtiles;
     public List<TileBase> bush2tiles;
@@ -342,6 +344,12 @@ public class Player : MonoBehaviour
             GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = EnemyLeave;
             Time.timeScale = 0;
             HealthLocked = false;
+            Color magenta = new Vector4(1f, 0f, 1f, 1f);
+            Color murky = new Vector4(1f, 1f, 0f, 1f);
+            Grass.color = magenta;
+            Water.color = murky;
+            WaterProp.color = murky;
+            WaterWalkable.color = murky;
             yield return null;
         }
         HealthLocked = false;
@@ -367,9 +375,11 @@ public class Player : MonoBehaviour
             GameObject.Destroy(backpack);
             GameObject.Destroy(backpack);
             Color magenta = new Vector4(1f, 0f, 1f, 1f);
-            Color murky = new Vector4(1f, 0.5f, 0f, 1f);
+            Color murky = new Vector4(1f, 1f, 0f, 1f);
             Grass.color = magenta;
             Water.color = murky;
+            WaterProp.color = murky;
+            WaterWalkable.color = murky;
 
         }
         if (TileArrayCounter < treetiles.Count - 1)
@@ -404,10 +414,11 @@ public class Player : MonoBehaviour
             GameObject.Destroy(minimap);
             GameObject.Destroy(Map);
             Color magenta = new Vector4(1f, 0f, 1f, 1f);
-            Color murky = new Vector4(1f, 0.5f, 0f, 1f);
+            Color murky = new Vector4(1f, 1f, 0f, 1f);
             Grass.color = magenta;
             Water.color = murky;
-            
+            WaterProp.color = murky;
+            WaterWalkable.color = murky;
         }
         if (TileArrayCounter < treetiles.Count - 1)
         {
