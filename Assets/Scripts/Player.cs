@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public Tilemap Water;
     public Tilemap WaterWalkable;
     public Tilemap WaterProp;
+    public Tilemap Dirt;
 
     public List<TileBase> bushtiles;
     public List<TileBase> bush2tiles;
@@ -58,12 +59,25 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //print("Hearts Left = " + PlayerHealth);
         GetKeyInput();
         PlayerMovement();
         if (TileArrayCounter >= treetiles.Count - 1)
         {
             BGKMusic.pitch = -1;
+            print(TileArrayCounter / (treetiles.Count - 1));
+        }
+        if( TileArrayCounter == 2)
+        {
+            Color magenta = new Vector4(1f, 0f, 1f, 1f);
+            Color murky = new Vector4(1f, 1f, 0f, 1f);
+            Color cyan = new Vector4(0f, 1f, 1f, 1f);
+            Grass.color = magenta;
+            Water.color = murky;
+            WaterProp.color = murky;
+            WaterWalkable.color = murky;
+            Dirt.color = cyan;
         }
     }
 
@@ -344,12 +358,7 @@ public class Player : MonoBehaviour
             GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = EnemyLeave;
             Time.timeScale = 0;
             HealthLocked = false;
-            Color magenta = new Vector4(1f, 0f, 1f, 1f);
-            Color murky = new Vector4(1f, 1f, 0f, 1f);
-            Grass.color = magenta;
-            Water.color = murky;
-            WaterProp.color = murky;
-            WaterWalkable.color = murky;
+          
             yield return null;
         }
         HealthLocked = false;
@@ -374,12 +383,7 @@ public class Player : MonoBehaviour
             }
             GameObject.Destroy(backpack);
             GameObject.Destroy(backpack);
-            Color magenta = new Vector4(1f, 0f, 1f, 1f);
-            Color murky = new Vector4(1f, 1f, 0f, 1f);
-            Grass.color = magenta;
-            Water.color = murky;
-            WaterProp.color = murky;
-            WaterWalkable.color = murky;
+           
 
         }
         if (TileArrayCounter < treetiles.Count - 1)
@@ -413,12 +417,7 @@ public class Player : MonoBehaviour
             }
             GameObject.Destroy(minimap);
             GameObject.Destroy(Map);
-            Color magenta = new Vector4(1f, 0f, 1f, 1f);
-            Color murky = new Vector4(1f, 1f, 0f, 1f);
-            Grass.color = magenta;
-            Water.color = murky;
-            WaterProp.color = murky;
-            WaterWalkable.color = murky;
+          
         }
         if (TileArrayCounter < treetiles.Count - 1)
         {
