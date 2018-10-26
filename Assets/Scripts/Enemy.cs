@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         //EnemyMovement();
-        EnemyFollow();
+        //EnemyFollow();
         // Vector3 direction = gameObject.transform.position - PlayerTarget.position;
         // direction = direction.normalized; // find the direction we're going
 
