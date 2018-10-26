@@ -6,7 +6,8 @@ public class EnemyBehavior : MonoBehaviour {
     public Transform PlayerPos;
     public float MinDistance;
     public Player PlayerHealth;
-
+    public MonoBehaviour patrol;
+    public MonoBehaviour follow;
 
 	// Use this for initialization
 	void Start () {
@@ -25,14 +26,14 @@ public class EnemyBehavior : MonoBehaviour {
             
             if (PlayerHealth.PlayerHealth == 0)
             {
-                gameObject.GetComponent<EnemyPatrol>().enabled = true; //stop patrolling
-                gameObject.GetComponent<Enemy>().enabled = false;
+                patrol.enabled = true; //stop patrolling
+                follow.enabled = false;
                 
             }
             else
             {
-                gameObject.GetComponent<EnemyPatrol>().enabled = false; //stop patrolling
-                gameObject.GetComponent<Enemy>().enabled = true; //start following
+                patrol.enabled = false; //stop patrolling
+                follow.enabled = true; //start following
             }
         }
 
