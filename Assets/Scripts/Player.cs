@@ -38,7 +38,8 @@ public class Player : MonoBehaviour
     public float FadeRate;
     public bool HeartLocked = false;
     public int FadeHeartCalls = 0;
-    public AudioSource BGKMusic;
+    public AudioSource NormalBGM;
+    public AudioSource ReversedBGM;
     public string EnemyLeave;
     [SerializeField]
     private float MovementSpeed; // set value in inspector
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        NormalBGM.Play();
         PlayerHealth = PlayerHearts.Count;
         RB = GetComponent<Rigidbody2D>();
         MovementState = GetComponent<Animator>();
@@ -65,7 +67,12 @@ public class Player : MonoBehaviour
         PlayerMovement();
         if (TileArrayCounter >= treetiles.Count - 1)
         {
-            BGKMusic.pitch = -1;
+            if (NormalBGM.isPlaying)
+            {
+                NormalBGM.Stop();
+                ReversedBGM.Play();
+            }
+          
             print(TileArrayCounter / (treetiles.Count - 1));
         }
         if( TileArrayCounter == 2)
