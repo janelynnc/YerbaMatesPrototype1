@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     public GameObject bagprefab;
     public string bagtext;
 
+    public GameObject[] enemies;
+    public GameObject player;
     private Rigidbody2D RB;
     private Animator MovementState;
     private Vector2 MovementDirection;
@@ -45,6 +47,8 @@ public class Player : MonoBehaviour
     private float MovementSpeed; // set value in inspector
     public GameObject textbox;
     public string maptext;
+    public string attack_close_text;
+    public string attack_distant_text;
     public string actionToPerform = null;
     public List<string> KeyPressed;
     public bool lostMap = false;
@@ -61,7 +65,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Pressed primary button.");
+            StartCoroutine("cannotAttack");
+
+        }
         //print("Hearts Left = " + PlayerHealth);
         GetKeyInput();
         PlayerMovement();
@@ -371,6 +380,30 @@ public class Player : MonoBehaviour
         HealthLocked = false;
         yield return null;
     }
+
+    IEnumerator cannotAttack() {
+        Time.timeScale = 0;
+        textbox.SetActive(true);
+
+        if (enemyCloseBy()) {
+            GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = attack_close_text;
+        } else {
+            GameObject.FindGameObjectWithTag("textboxtext").GetComponent<Text>().text = attack_distant_text;
+        }
+        yield return null;
+    }
+
+    public bool enemyCloseBy() {
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        player = GameObject.FindGameObjectWithTag("Player");
+        foreach (GameObject enemy in enemies) {
+            if (Vector2.Distance(enemy.transform.position, player.transform.position) < 5.0f) {
+                return true;
+            }
+        }
+        return false; 
+    }
+
     IEnumerator losebag()
     {
         Time.timeScale = 0;

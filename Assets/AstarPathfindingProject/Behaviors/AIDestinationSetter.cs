@@ -47,7 +47,7 @@ namespace Pathfinding {
         void Update () {
             if (target != null && ai != null) ai.destination = target.position;
 
-            if (Vector2.Distance(target.position, ai.position) < 2.5f)
+            if (Vector2.Distance(target.position, ai.position) < 2.4f)
             {
                 if (!walking.isPlaying)
                 {
